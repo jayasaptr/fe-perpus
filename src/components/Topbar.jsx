@@ -1,4 +1,11 @@
+import Cookies from "js-cookie";
+
 export const Topbar = (props) => {
+  let user = Cookies.get("user");
+
+  user = JSON.parse(user);
+  console.log("🚀 ~ Topbar ~ user:", user.image);
+
   const { onClick } = props;
   return (
     <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
@@ -25,12 +32,14 @@ export const Topbar = (props) => {
             aria-expanded="false"
           >
             <span className="mr-2 d-none d-lg-inline text-gray-600 small">
-              Douglas McGee
+              {user.name}
             </span>
-            <img
+            {/* <img
               className="img-profile rounded-circle"
               src="img/undraw_profile.svg"
-            />
+            /> */}
+            {/* Ambil image dari user */}
+            <img className="img-profile rounded-circle" src={user.image} />
           </a>
           {/* Dropdown - User Information */}
           <div

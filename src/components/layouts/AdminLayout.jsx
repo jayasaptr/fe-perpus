@@ -1,8 +1,22 @@
 import { useState } from "react";
 import { Sidebar } from "../Sidebar";
 import { Topbar } from "../Topbar";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
+import { useContext } from "react";
+import Cookies from "js-cookie";
 
 const AdminLayout = ({ children, title }) => {
+  const navigate = useNavigate();
+  const { setIsAuthenticated } = useContext(AuthContext);
+
+  const handleLogout = () => {
+    Cookies.remove("token");
+    Cookies.remove("user");
+    setIsAuthenticated(false);
+    navigate("/auth/login", { replace: true });
+  };
+
   const [sideToggle, setSideToggle] = useState(
     "navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
   );
@@ -101,9 +115,13 @@ const AdminLayout = ({ children, title }) => {
                 >
                   Cancel
                 </button>
-                <a className="btn btn-primary" href="login.html">
+                <button
+                  className="btn btn-primary"
+                  onClick={handleLogout}
+                  data-dismiss="modal"
+                >
                   Logout
-                </a>
+                </button>
               </div>
             </div>
           </div>

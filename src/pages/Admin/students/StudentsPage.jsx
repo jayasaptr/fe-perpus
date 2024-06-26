@@ -1,6 +1,27 @@
 import AdminLayout from "../../../components/layouts/AdminLayout";
+import { getAllSiswa } from "../../../services/data/siswa";
+import { useEffect, useState } from "react";
 
 const StudentsPage = () => {
+  const [siswa, setSiswa] = useState([]);
+
+  const fetchSiswa = async () => {
+    try {
+      const response = await getAllSiswa({ pagination: 10, page: 1 });
+      // set siswa yang role != admin
+      response.data.data = response.data.data.filter(
+        (item) => item.role !== "admin"
+      );
+      setSiswa(response.data.data);
+    } catch (error) {
+      console.log("🚀 ~ fetchSiswa ~ error:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchSiswa();
+  }, []);
+
   return (
     <AdminLayout title="Data Siswa">
       <div className="card shadow mb-4">
@@ -8,12 +29,22 @@ const StudentsPage = () => {
           <h6 className="m-0 font-weight-bold text-primary">Category</h6>
         </div> */}
         <div className="card-body">
+          <div className="d-flex justify-content-end">
+            <a
+              href="/admin/students/create"
+              className="btn btn-primary mb-3"
+              style={{ padding: "5px 20px" }}
+            >
+              <i className="fas fa-plus mr-2"></i>
+              Add Siswa
+            </a>
+          </div>
           <div className="table-responsive">
             <table
               className="table table-bordered"
               id="dataTable"
               width="100%"
-              cellspacing="0"
+              cellSpacing="0"
             >
               <thead>
                 <tr>
@@ -44,43 +75,48 @@ const StudentsPage = () => {
                 </tr>
               </tfoot>
               <tbody>
-                <tr>
-                  <td className="align-middle">1234567890</td>
-                  {/* ambil image random di internet dan beri size yang sesuai */}
-                  <td className="align-middle">
-                    <img
-                      src="https://picsum.photos/200/200"
-                      alt="random"
-                      className="img-fluid"
-                    />
-                  </td>
-                  <td className="align-middle">John Doe</td>
-                  <td className="align-middle">10</td>
-                  <td className="align-middle">1990-01-01</td>
-                  <td className="align-middle">Jl. Raya</td>
-                  <td className="align-middle">081234567890</td>
-                  <td
-                    className="align-middle"
-                    style={{ padding: "10px", borderBottom: "none" }}
-                  >
-                    <a
-                      href="#"
-                      className="btn btn-warning btn-sm mr-2"
-                      style={{ padding: "5px 10px" }}
+                {siswa.map((item, index) => (
+                  <tr key={index}>
+                    <td className="align-middle">{item.nisn}</td>
+                    <td className="align-middle">
+                      <img
+                        src={item.image}
+                        alt="random"
+                        className="img-fluid align-middle"
+                        style={{
+                          width: "50px",
+                          height: "50px",
+                        }}
+                      />
+                    </td>
+                    <td className="align-middle">{item.name}</td>
+                    <td className="align-middle">{item.class}</td>
+                    <td className="align-middle">{item.date_of_birth}</td>
+                    <td className="align-middle">{item.address}</td>
+                    <td className="align-middle">{item.phone_number}</td>
+                    <td
+                      className="align-middle"
+                      style={{ padding: "10px", borderBottom: "none" }}
                     >
-                      <i className="fas fa-edit mr-2"></i>
-                      Edit
-                    </a>
-                    <a
-                      href="#"
-                      className="btn btn-danger btn-sm"
-                      style={{ padding: "5px 10px" }}
-                    >
-                      <i className="fas fa-trash mr-2"></i>
-                      Delete
-                    </a>
-                  </td>
-                </tr>
+                      <a
+                        href={`/admin/students/update/${item.id}`}
+                        className="btn btn-warning btn-sm mr-2"
+                        style={{ padding: "5px 10px" }}
+                      >
+                        <i className="fas fa-edit mr-2"></i>
+                        Edit
+                      </a>
+                      <a
+                        href="#"
+                        className="btn btn-danger btn-sm"
+                        style={{ padding: "5px 10px" }}
+                      >
+                        <i className="fas fa-trash mr-2"></i>
+                        Delete
+                      </a>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

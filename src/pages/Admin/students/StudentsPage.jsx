@@ -1,5 +1,5 @@
 import AdminLayout from "../../../components/layouts/AdminLayout";
-import { getAllSiswa } from "../../../services/data/siswa";
+import { getAllSiswa, deleteSiswa } from "../../../services/data/siswa";
 import { useEffect, useState } from "react";
 
 const StudentsPage = () => {
@@ -7,7 +7,7 @@ const StudentsPage = () => {
 
   const fetchSiswa = async () => {
     try {
-      const response = await getAllSiswa({ pagination: 10, page: 1 });
+      const response = await getAllSiswa({ pagination: 100, page: 1 });
       // set siswa yang role != admin
       response.data.data = response.data.data.filter(
         (item) => item.role !== "admin"
@@ -15,6 +15,18 @@ const StudentsPage = () => {
       setSiswa(response.data.data);
     } catch (error) {
       console.log("🚀 ~ fetchSiswa ~ error:", error);
+    }
+  };
+
+  const handleDeleteSiswa = async (id) => {
+    try {
+      const response = await deleteSiswa(id);
+      if (response.success) {
+        alert("Siswa berhasil dihapus");
+        fetchSiswa();
+      }
+    } catch (error) {
+      console.log("🚀 ~ handleDeleteSiswa ~ error:", error);
     }
   };
 
@@ -106,14 +118,14 @@ const StudentsPage = () => {
                         <i className="fas fa-edit mr-2"></i>
                         Edit
                       </a>
-                      <a
-                        href="#"
+                      <button
+                        onClick={() => handleDeleteSiswa(item.id)}
                         className="btn btn-danger btn-sm"
                         style={{ padding: "5px 10px" }}
                       >
                         <i className="fas fa-trash mr-2"></i>
                         Delete
-                      </a>
+                      </button>
                     </td>
                   </tr>
                 ))}

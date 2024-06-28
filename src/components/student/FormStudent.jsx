@@ -1,7 +1,18 @@
 import { useState } from "react";
 
 export const FormStudent = (props) => {
-  const { onSubmit, defaultName, defaultAge, defaultGrade, defaultImage } = props;
+  const {
+    onSubmit,
+    defaultName,
+    defaultEmail,
+    defaultPassword,
+    defaultNisn,
+    defaultClass,
+    defaultDateOfBirth,
+    defaultAdress,
+    defaultPhoneNumber,
+    defaultImage,
+  } = props;
 
   const [studentImage, setStudentImage] = useState(null);
   const [previewImage, setPreviewImage] = useState("");
@@ -40,25 +51,81 @@ export const FormStudent = (props) => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="age">Umur</label>
+          <label htmlFor="email">Email</label>
           <input
-            type="number"
+            type="email"
             className="form-control"
-            id="age"
-            name="age"
-            placeholder="Masukkan umur"
-            defaultValue={defaultAge || ""}
+            id="email"
+            name="email"
+            placeholder="Masukkan Email"
+            defaultValue={defaultEmail || ""}
           />
         </div>
+        {/* cek jika defaultName tidak ada */}
+        {!defaultName && (
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              className="form-control"
+              id="password"
+              name="password"
+              placeholder="Masukkan Password"
+              defaultValue={defaultPassword || ""}
+            />
+          </div>
+        )}
         <div className="form-group">
-          <label htmlFor="grade">Kelas</label>
+          <label htmlFor="nisn">NISN</label>
           <input
             type="text"
             className="form-control"
-            id="grade"
-            name="grade"
-            placeholder="Masukkan kelas"
-            defaultValue={defaultGrade || ""}
+            id="nisn"
+            name="nisn"
+            placeholder="Masukkan NISN"
+            defaultValue={defaultNisn || ""}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="class">Kelas</label>
+          <input
+            type="text"
+            className="form-control"
+            id="class"
+            name="class"
+            placeholder="Masukkan Kelas"
+            defaultValue={defaultClass || ""}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="date_of_birth">Tanggal Lahir</label>
+          <input
+            type="date"
+            className="form-control"
+            id="date_of_birth"
+            name="date_of_birth"
+            defaultValue={defaultDateOfBirth || ""}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="address">Alamat</label>
+          <textarea
+            className="form-control"
+            id="address"
+            name="address"
+            placeholder="Masukkan Alamat"
+            defaultValue={defaultAdress || ""}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="phone_number">Nomor Telepon</label>
+          <input
+            type="text"
+            className="form-control"
+            id="phone_number"
+            name="phone_number"
+            placeholder="Masukkan Nomor Telepon"
+            defaultValue={defaultPhoneNumber || ""}
           />
         </div>
         <div className="form-group d-flex flex-column gap-4">

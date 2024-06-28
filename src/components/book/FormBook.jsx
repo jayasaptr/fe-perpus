@@ -35,7 +35,7 @@ export const FormBook = (props) => {
 
   const fetchCategory = async () => {
     try {
-      const response = await getAllCategory({ pagination: 10, page });
+      const response = await getAllCategory({ pagination: 100, page });
       console.log("🚀 ~ fetchCategory ~ response", response.data.data);
       setCategories([...categories, ...response.data.data]);
       setHasMore(response.data.data.length > 0);

@@ -1,8 +1,12 @@
 import { useLocation } from "react-router-dom";
+import Cookies from "js-cookie";
 
 export const Sidebar = (props) => {
   const location = useLocation();
   const { onClick, sideToggle } = props;
+
+  const user = Cookies.get("user") || "{}";
+  const role = JSON.parse(user).role || "";
 
   return (
     <ul className={sideToggle} id="accordionSidebar">
@@ -32,16 +36,18 @@ export const Sidebar = (props) => {
       {/* Divider */}
       <hr className="sidebar-divider" />
       <div className="sidebar-heading">Interface</div>
-      <li
-        className={`
+      {role === "admin" && (
+        <li
+          className={`
         nav-item ${location.pathname === "/admin/category" ? "active" : ""}
         `}
-      >
-        <a className="nav-link" href="/admin/category">
-          <i className="fas fa-fw fa-clipboard-list"></i>
-          <span>Category</span>
-        </a>
-      </li>
+        >
+          <a className="nav-link" href="/admin/category">
+            <i className="fas fa-fw fa-clipboard-list"></i>
+            <span>Category</span>
+          </a>
+        </li>
+      )}
       <li
         className={`
         nav-item ${location.pathname === "/admin/book" ? "active" : ""}
@@ -52,17 +58,31 @@ export const Sidebar = (props) => {
           <span>Buku</span>
         </a>
       </li>
-      <li
-        className={`
+      {role === "admin" && (
+        <li
+          className={`
         nav-item ${location.pathname === "/admin/students" ? "active" : ""}
         `}
+        >
+          <a className="nav-link" href="/admin/students">
+            <i className="fas fa-fw fa-users" />
+            <span>Siswa</span>
+          </a>
+        </li>
+      )}
+      {/* Divider */}
+      <hr className="sidebar-divider" />
+      <div className="sidebar-heading">Transaksi</div>
+      <li
+        className={`
+        nav-item ${location.pathname === "/admin/pinjam" ? "active" : ""}
+        `}
       >
-        <a className="nav-link" href="/admin/students">
-          <i className="fas fa-fw fa-users" />
-          <span>Siswa</span>
+        <a className="nav-link" href="/admin/pinjam">
+          <i className="fas fa-fw fa-book" />
+          <span>Pinjam Buku</span>
         </a>
       </li>
-      {/* Divider */}
       <hr className="sidebar-divider d-none d-md-block" />
       {/* Sidebar Toggler (Sidebar) */}
       <div className="text-center d-none d-md-inline">

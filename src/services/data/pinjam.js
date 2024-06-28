@@ -1,12 +1,12 @@
 import api from "../api";
 import Cookies from "js-cookie";
 
-export const getAllCategory = async ({ pagination, page }) => {
+export const getAllPinjam = async ({ pagination, page }) => {
   const token = Cookies.get("token");
 
   try {
     const response = await api.get(
-      `/category?pagination=${pagination}&page=${page}`,
+      `/transaction?pagination=${pagination}&page=${page}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -19,11 +19,11 @@ export const getAllCategory = async ({ pagination, page }) => {
   }
 };
 
-export const getCategoryById = async (id) => {
+export const getPinjamById = async (id) => {
   const token = Cookies.get("token");
 
   try {
-    const response = await api.get(`/category/${id}`, {
+    const response = await api.get(`/transaction/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -34,11 +34,11 @@ export const getCategoryById = async (id) => {
   }
 };
 
-export const createCategory = async (data) => {
+export const createPinjam = async (data) => {
   const token = Cookies.get("token");
 
   try {
-    const response = await api.post("/category", data, {
+    const response = await api.post("/transaction", data, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -49,11 +49,11 @@ export const createCategory = async (data) => {
   }
 };
 
-export const updateCategory = async (id, data) => {
+export const updatePinjam = async (id, data) => {
   const token = Cookies.get("token");
 
   try {
-    const response = await api.put(`/category/${id}`, data, {
+    const response = await api.put(`/transaction/${id}`, data, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -64,15 +64,18 @@ export const updateCategory = async (id, data) => {
   }
 };
 
-export const deleteCategory = async (id) => {
+export const getPinjamByUserId = async ({ user_id, pagination, page }) => {
   const token = Cookies.get("token");
 
   try {
-    const response = await api.delete(`/category/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await api.get(
+      `/transaction/user/${user_id}pagination=${pagination}&page=${page}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return response.data;
   } catch (error) {
     return Promise.reject(error.response.data);

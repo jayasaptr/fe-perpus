@@ -1,15 +1,30 @@
 import { useEffect, useState } from "react";
 import AdminLayout from "../../../components/layouts/AdminLayout";
-import { getAllCategory } from "../../../services/data/category";
+import {
+  getAllCategory,
+  deleteCategory,
+} from "../../../services/data/category";
 
 const CategoryPage = () => {
   const [category, setCategory] = useState([]);
 
   const fetchCategory = async () => {
     try {
-      const response = await getAllCategory({ pagination: 10, page: 1 });
+      const response = await getAllCategory({ pagination: 100, page: 1 });
       console.log("🚀 ~ fetchCategory ~ response:", response.data.data);
       setCategory(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDeleteCategory = async (id) => {
+    try {
+      const response = await deleteCategory(id);
+      if (response.success) {
+        alert("Category berhasil dihapus");
+        fetchCategory();
+      }
     } catch (error) {
       console.log(error);
     }
@@ -100,14 +115,14 @@ const CategoryPage = () => {
                         <i className="fas fa-edit mr-2"></i>
                         Edit
                       </a>
-                      <a
-                        href="#"
+                      <button
+                        onClick={() => handleDeleteCategory(item.id)}
                         className="btn btn-danger btn-sm"
                         style={{ padding: "5px 10px" }}
                       >
                         <i className="fas fa-trash mr-2"></i>
                         Delete
-                      </a>
+                      </button>
                     </td>
                   </tr>
                 ))}

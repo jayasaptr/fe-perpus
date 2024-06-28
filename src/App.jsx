@@ -14,8 +14,13 @@ import CreateBookPage from "./pages/Admin/book/CrateBookPage";
 import UpdatBookPage from "./pages/Admin/book/UpdateBookPage";
 import CreateStudentPage from "./pages/Admin/students/CreateStudentPage";
 import UpdateStudentPage from "./pages/Admin/students/UpdateStudentPage";
+import PinjamPage from "./pages/Admin/pinjam/PinjamPage";
+import Cookies from "js-cookie";
+import CreatePinjamPage from "./pages/Admin/pinjam/CreatePinjamPage";
 
 function App() {
+  const user = Cookies.get("user") || "{}";
+  const role = JSON.parse(user).role || "";
   const { isAuthenticated } = useContext(AuthContext);
   return (
     <Routes>
@@ -33,7 +38,7 @@ function App() {
         <Route
           path="category"
           element={
-            isAuthenticated ? (
+            isAuthenticated && role === "admin" ? (
               <CategoryPage />
             ) : (
               <Navigate to="/auth/login" replace />
@@ -43,7 +48,7 @@ function App() {
         <Route
           path="category/create"
           element={
-            isAuthenticated ? (
+            isAuthenticated && role === "admin" ? (
               <CreateCategoryPage />
             ) : (
               <Navigate to="/auth/login" replace />
@@ -53,7 +58,7 @@ function App() {
         <Route
           path="category/update/:id"
           element={
-            isAuthenticated ? (
+            isAuthenticated && role === "admin" ? (
               <UpdateCategoryPage />
             ) : (
               <Navigate to="/auth/login" replace />
@@ -73,7 +78,7 @@ function App() {
         <Route
           path="book/create"
           element={
-            isAuthenticated ? (
+            isAuthenticated && role === "admin" ? (
               <CreateBookPage />
             ) : (
               <Navigate to="/auth/login" replace />
@@ -83,8 +88,18 @@ function App() {
         <Route
           path="book/update/:id"
           element={
-            isAuthenticated ? (
+            isAuthenticated && role === "admin" ? (
               <UpdatBookPage />
+            ) : (
+              <Navigate to="/auth/login" replace />
+            )
+          }
+        />
+        <Route
+          path="book/pinjam/:id"
+          element={
+            isAuthenticated ? (
+              <CreatePinjamPage />
             ) : (
               <Navigate to="/auth/login" replace />
             )
@@ -93,7 +108,7 @@ function App() {
         <Route
           path="students"
           element={
-            isAuthenticated ? (
+            isAuthenticated && role === "admin" ? (
               <StudentsPage />
             ) : (
               <Navigate to="/auth/login" replace />
@@ -103,7 +118,7 @@ function App() {
         <Route
           path="students/create"
           element={
-            isAuthenticated ? (
+            isAuthenticated && role === "admin" ? (
               <CreateStudentPage />
             ) : (
               <Navigate to="/auth/login" replace />
@@ -113,8 +128,18 @@ function App() {
         <Route
           path="students/update/:id"
           element={
-            isAuthenticated ? (
+            isAuthenticated && role === "admin" ? (
               <UpdateStudentPage />
+            ) : (
+              <Navigate to="/auth/login" replace />
+            )
+          }
+        />
+        <Route
+          path="pinjam/"
+          element={
+            isAuthenticated ? (
+              <PinjamPage />
             ) : (
               <Navigate to="/auth/login" replace />
             )

@@ -11,7 +11,6 @@ export const FormBook = (props) => {
     defaultCategory,
     defaultImage,
   } = props;
-  console.log("🚀 ~ FormBook ~ defaultCategory:", defaultCategory);
 
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState(null);
@@ -96,32 +95,55 @@ export const FormBook = (props) => {
             defaultValue={defaultPublicationYear || ""}
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="category">Category : {defaultCategory.name}</label>
-          <Select
-            options={categories.map((category) => ({
-              value: category.id,
-              label: category.name,
-            }))}
-            defaultValue={{
-              value: 1,
-              label: defaultCategory.name,
-            }}
-            onChange={(e) => setCategory(e.value)}
-            components={
-              <InfiniteScroll
-                dataLength={categories.length}
-                next={() => setPage(page + 1)}
-                hasMore={hasMore}
-                loader={<h4>Loading...</h4>}
-                height={200}
-              />
-            }
-          />
-        </div>
+        {defaultCategory ? (
+          <div className="form-group">
+            <label htmlFor="category">
+              Category : {defaultCategory.name || ""}
+            </label>
+            <Select
+              options={categories.map((category) => ({
+                value: category.id,
+                label: category.name,
+              }))}
+              defaultValue={{
+                value: defaultCategory.id || "",
+                label: defaultCategory.name || "",
+              }}
+              onChange={(e) => setCategory(e.value)}
+              components={
+                <InfiniteScroll
+                  dataLength={categories.length}
+                  next={() => setPage(page + 1)}
+                  hasMore={hasMore}
+                  loader={<h4>Loading...</h4>}
+                  height={200}
+                />
+              }
+            />
+          </div>
+        ) : (
+          <div className="form-group">
+            <label htmlFor="category">Category</label>
+            <Select
+              options={categories.map((category) => ({
+                value: category.id,
+                label: category.name,
+              }))}
+              onChange={(e) => setCategory(e.value)}
+              components={
+                <InfiniteScroll
+                  dataLength={categories.length}
+                  next={() => setPage(page + 1)}
+                  hasMore={hasMore}
+                  loader={<h4>Loading...</h4>}
+                  height={200}
+                />
+              }
+            />
+          </div>
+        )}
         <div className="form-group d-flex flex-column gap-4">
           <label htmlFor="image">Image</label>
-          {/* showImage jika ada defaultImage atau preview  */}
           {(defaultImage || previewImage) && (
             <img
               src={previewImage || defaultImage}
